@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>DEFINITIONS</title>
+    </head>
+<script>
+function search() {
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      alert(this.responseText);
+    }
+  };
+  xmlhttp.open("GET", "request.php?q=definition", true);
+  xmlhttp.send();
+}
+</script>
+ <body>
+<button onclick="search()">SEARCH</button>
+</body>
+</html>
