@@ -2,20 +2,57 @@
 <html>
     <head>
         <title>DEFINITIONS</title>
-    </head>
+    
 <script>
 function search() {
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
+    
+  var GEThttp = new XMLHttpRequest();
+  GEThttp.onreadystatechange = function() {
+      
+    if (this.readyState == 4 && this.status == 200) 
+    {
       alert(this.responseText);
+      
+  
+
+//   GEThttp.open("GET", "request.php?q=definition", true);
+//   GEThttp.send();
     }
-  };
-  xmlhttp.open("GET", "request.php?q=definition", true);
-  xmlhttp.send();
+    };
 }
+function todo(strng){
+        if (strng.length == 0) {
+            document.getElementById("result").innerHTML="";
+            return;
+        }
+        else{ 
+            var GEThttp = new XMLHttpRequest();
+            GEThttp.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                   document.getElementById("result").innerHTML = this.responseText;
+              
+                }
+            };
+            GEThttp.open("GET", "request.php?q=" + strng, true);
+            GEThttp.send();
+        }
+    }
+
 </script>
+  </head>
  <body>
-<button onclick="search()">SEARCH</button>
+<!--<button onclick=search()>SEARCH</button>-->
+
+<h1>
+  WEB DICTIONARY
+</h1>
+<form name ="getter">
+    <input type ="text" name="find" placeholder="FIND">
+   
+</form>
+<br>
+<Button onclick=todo(document.forms["getter"]["find"].value)>SUBMIT</Button>
+<Button id = "forXML" class = "button">GET ALL DEFINITIONS </Button>
+<div id = "result"> </div>
 </body>
 </html>
