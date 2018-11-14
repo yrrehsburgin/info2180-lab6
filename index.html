@@ -4,23 +4,8 @@
         <title>DEFINITIONS</title>
     
 <script>
-function search() {
-    
-  var GEThttp = new XMLHttpRequest();
-  GEThttp.onreadystatechange = function() {
-      
-    if (this.readyState == 4 && this.status == 200) 
-    {
-      alert(this.responseText);
-      
-  
 
-//   GEThttp.open("GET", "request.php?q=definition", true);
-//   GEThttp.send();
-    }
-    };
-}
-function todo(strng){
+function formget(strng){
         if (strng.length == 0) {
             document.getElementById("result").innerHTML="";
             return;
@@ -37,7 +22,52 @@ function todo(strng){
             GEThttp.send();
         }
     }
-
+    
+window.onload = function () { 
+     var getXmlButton = document.querySelector('#getXml'); 
+ 
+ 
+     getXmlButton.addEventListener('click', function() { 
+         
+         var HTTPRequest = new XMLHttpRequest(); 
+ 
+ 
+         
+         var url = "request.php"; 
+         HTTPRequest.onreadystatechange = getXml; 
+         HTTPRequest.open('GET', url); 
+         HTTPRequest.send(); 
+ 
+ 
+         function getXml() { 
+             if (HTTPRequest.readyState === XMLHttpRequest.DONE)
+             { 
+               if (HTTPRequest.status === 200)
+               {
+                 var response = HTTPRequest.responseXML; 
+                 console.log(response);
+                 var results = document.querySelector('#result'); 
+                 var personinfo = response.getElementsByTagName('definition'); 
+                 var list = document.createElement('ol'); 
+                 
+                 results.appendChild(list); 
+                 for (var x = 0; x < personinfo.length; x++) { 
+                     var person = document.createElement('li'); 
+                     var txt = document.createTextNode(personinfo[x].getAttribute('name'));
+                     var ttt =  document.createTextNode(personinfo[x].getAttribute('author'));
+                     var text = document.createTextNode(personinfo[x].childNodes[0].nodeValue); 
+                     person.appendChild(txt)
+                     person.appendChild(ttt)
+                     person.appendChild(text) 
+                     list.appendChild(person); 
+                 } 
+               } else { 
+                 alert('Request error.'); 
+               } 
+             } 
+         } 
+     }); 
+ }; 
 </script>
   </head>
  <body>
@@ -46,13 +76,18 @@ function todo(strng){
 <h1>
   WEB DICTIONARY
 </h1>
+
 <form name ="getter">
-    <input type ="text" name="find" placeholder="FIND">
+    <input type ="text" name="find" placeholder="Enter Search Term">
    
 </form>
-<br>
-<Button onclick=todo(document.forms["getter"]["find"].value)>SUBMIT</Button>
-<Button id = "forXML" class = "button">GET ALL DEFINITIONS </Button>
+
+</br>
+
+<Button onclick= formget(document.forms["getter"]["find"].value)>SUBMIT</Button>
+<Button id = "getXml" class = "button">GET ALL DEFINITIONS </Button>
 <div id = "result"> </div>
+
 </body>
+
 </html>
